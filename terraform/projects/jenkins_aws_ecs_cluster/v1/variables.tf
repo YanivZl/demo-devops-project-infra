@@ -38,3 +38,15 @@ variable "jenkins_controller_port" {
   description = "Port used to connect to Jenkins controller"
   type        = number
 }
+
+variable "jenkins_controller_cpu" {
+description = "Value for Jenkins controller CPU of ECS Fargate task"
+  type        = number
+  default     = 1024
+}
+
+variable "jenkins_controller_memory" {
+  description = "Value for Jenkins controller memory on ECS Fargat task"
+  type        = number
+  default     = 2048
+}

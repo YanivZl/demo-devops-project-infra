@@ -14,20 +14,20 @@ resource "aws_ecs_cluster" "this" {
 resource "aws_ecs_task_definition" "this" {
   family = var.application_name
   container_definitions = templatefile("${path.module}/container_definition.tftpl", {
-    container_name      = var.jenkins_controller_identifier,
-    container_image     = "jenkins/jenkins:lts-jdk17",
+    container_name          = var.jenkins_controller_identifier,
+    container_image         = "jenkins/jenkins:lts-jdk17",
     jenkins_controller_port = var.jenkins_controller_port
-    jenkins_agent_port  = var.jenkins_agent_port
-    source_volume       = "home",
-    awslogs_group       = aws_cloudwatch_log_group.this.name,
-    awslogs_region      = data.aws_region.current.name,
+    jenkins_agent_port      = var.jenkins_agent_port
+    source_volume           = "home",
+    awslogs_group           = aws_cloudwatch_log_group.this.name,
+    awslogs_region          = data.aws_region.current.name,
     }
   )
 
 
   network_mode = "awsvpc"
-  cpu          = 1024
-  memory       = 2048
+  cpu          = var.jenkins_controller_cpu
+  memory       = var.jenkins_controller_memory
 
   execution_role_arn = aws_iam_role.execution.arn
   task_role_arn      = aws_iam_role.task.arn
