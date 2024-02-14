@@ -30,5 +30,5 @@ output "jenkins_controller_agent_tunnel_connection" {
 
 output "jenkins_url" {
   description = "URL of the Jenkins server"
-  value       = "http://${aws_lb.this.dns_name}"
+  value       = "https://${aws_lb.this.dns_name}"
 }

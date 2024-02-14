@@ -40,7 +40,7 @@ variable "jenkins_controller_port" {
 }
 
 variable "jenkins_controller_cpu" {
-description = "Value for Jenkins controller CPU of ECS Fargate task"
+  description = "Value for Jenkins controller CPU of ECS Fargate task"
   type        = number
   default     = 1024
 }

@@ -31,6 +31,16 @@ resource "aws_security_group_rule" "http_ingress" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "https_ingress" {
+  security_group_id = aws_security_group.alb.id
+
+  type        = "ingress"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "ecs_egress" {
   security_group_id = aws_security_group.alb.id
 
@@ -43,13 +53,14 @@ resource "aws_security_group_rule" "ecs_egress" {
 
 
 ################################################################################
-# ALB http listener
+# ALB listeners
 ################################################################################
 
-resource "aws_lb_listener" "this" {
+resource "aws_lb_listener" "http_ingress" {
   load_balancer_arn = aws_lb.this.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+  certificate_arn   = "arn:aws:acm:us-east-2:099388283273:certificate/c98cd3a0-ff65-4be0-a9fd-0df0fc5112c0" 
 
   default_action {
     type             = "forward"
@@ -57,6 +68,20 @@ resource "aws_lb_listener" "this" {
   }
 }
 
+resource "aws_lb_listener" "http" {
+  load_balancer_arn = aws_lb.this.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
 
 ################################################################################
 # ALB target group
