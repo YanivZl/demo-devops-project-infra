@@ -132,7 +132,8 @@ data "aws_iam_policy_document" "ecs_access" {
       "ecs:DescribeContainerInstances",
       "ecs:DescribeTaskDefinition",
       "ecs:DescribeClusters",
-      "ecs:ListTagsForResource"
+      "ecs:ListTagsForResource",
+      "ecs:TagResource"
     ]
     resources = [
       "*"
